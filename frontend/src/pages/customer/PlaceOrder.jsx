@@ -26,29 +26,30 @@ const PlaceOrder = () => {
     setOrderResult(null);
   };
 
-  const buildPayload = () => ({
-    orderType: form.orderType,
-    paymentType: form.paymentType,
-    pickupAddress: { line: form.pickupLine, pincode: form.pickupPincode },
-    dropAddress: { line: form.dropLine, pincode: form.dropPincode },
-    packageDimensions: {
-      length: Number(form.length),
-      breadth: Number(form.breadth),
-      height: Number(form.height),
-    },
-    actualWeight: Number(form.actualWeight),
-  });
-
   const handleGetQuote = async (e) => {
     e.preventDefault();
     setError('');
     setQuote(null);
     setLoading(true);
     try {
-      const { data } = await api.post('/orders/quote', buildPayload());
+      const payload = {
+        orderType: form.orderType,
+        paymentType: form.paymentType,
+        pickupPincode: form.pickupPincode,
+        dropPincode: form.dropPincode,
+        length: Number(form.length),
+        breadth: Number(form.breadth),
+        height: Number(form.height),
+        actualWeight: Number(form.actualWeight),
+      };
+      const { data } = await api.post('/orders/quote', payload);
       setQuote(data);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to get quote');
+      if (err.response?.data?.details) {
+        setError(`Validation failed: ${err.response.data.details.map(d => `${d.field}: ${d.message}`).join(', ')}`);
+      } else {
+        setError(err.response?.data?.error || 'Failed to get quote');
+      }
     } finally {
       setLoading(false);
     }
@@ -58,11 +59,25 @@ const PlaceOrder = () => {
     setError('');
     setLoading(true);
     try {
-      const { data } = await api.post('/orders', buildPayload());
+      const payload = {
+        orderType: form.orderType,
+        paymentType: form.paymentType,
+        pickupAddress: { line: form.pickupLine, pincode: form.pickupPincode },
+        dropAddress: { line: form.dropLine, pincode: form.dropPincode },
+        length: Number(form.length),
+        breadth: Number(form.breadth),
+        height: Number(form.height),
+        actualWeight: Number(form.actualWeight),
+      };
+      const { data } = await api.post('/orders', payload);
       setOrderResult(data);
       setQuote(null);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to place order');
+      if (err.response?.data?.details) {
+        setError(`Validation failed: ${err.response.data.details.map(d => `${d.field}: ${d.message}`).join(', ')}`);
+      } else {
+        setError(err.response?.data?.error || 'Failed to place order');
+      }
     } finally {
       setLoading(false);
     }
