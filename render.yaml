@@ -29,7 +29,7 @@ services:
         sync: false
 
   # Vite Frontend Static Site
-  - type: static
+  - type: web
     name: delivery-tracker-frontend
     env: static
     rootDir: frontend
