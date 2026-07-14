@@ -31,10 +31,10 @@ services:
   # Vite Frontend Static Site
   - type: web
     name: delivery-tracker-frontend
-    env: static
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     routes:
       # Support Client-Side Routing (React Router) in Single Page Application
       - type: rewrite
