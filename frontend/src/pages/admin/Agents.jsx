@@ -49,9 +49,9 @@ const Agents = () => {
         <tbody>
           {agents.map((agent) => (
             <tr key={agent._id} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: 8 }}>{agent.name}</td>
-              <td style={{ padding: 8 }}>{agent.email}</td>
-              <td style={{ padding: 8 }}>{agent.zone?.name || agent.zoneName || '—'}</td>
+              <td style={{ padding: 8 }}>{agent.userId?.name || '—'}</td>
+              <td style={{ padding: 8 }}>{agent.userId?.email || '—'}</td>
+              <td style={{ padding: 8 }}>{agent.currentZoneId?.name || '—'}</td>
               <td style={{ padding: 8 }}>
                 <span style={{
                   padding: '2px 8px',

@@ -43,7 +43,7 @@ const PlaceOrder = () => {
         actualWeight: Number(form.actualWeight),
       };
       const { data } = await api.post('/orders/quote', payload);
-      setQuote(data);
+      setQuote(data.quote);
     } catch (err) {
       if (err.response?.data?.details) {
         setError(`Validation failed: ${err.response.data.details.map(d => `${d.field}: ${d.message}`).join(', ')}`);
@@ -177,15 +177,29 @@ const PlaceOrder = () => {
           <h3>Quote Breakdown</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <tbody>
-              {quote.breakdown && Object.entries(quote.breakdown).map(([key, val]) => (
-                <tr key={key} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '6px 8px', textTransform: 'capitalize' }}>{key.replace(/([A-Z])/g, ' $1')}</td>
-                  <td style={{ padding: '6px 8px', textAlign: 'right' }}>₹{val}</td>
-                </tr>
-              ))}
+              <tr style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '6px 8px' }}>Rate Type</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right', textTransform: 'capitalize' }}>{quote.rateType}</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '6px 8px' }}>Volumetric Weight</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right' }}>{quote.volumetricWeight} kg</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '6px 8px' }}>Chargeable Weight</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right' }}>{quote.chargeableWeight} kg</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '6px 8px' }}>Base Charge</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right' }}>₹{quote.baseCharge}</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '6px 8px' }}>COD Surcharge</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right' }}>₹{quote.codSurcharge}</td>
+              </tr>
               <tr style={{ fontWeight: 'bold', borderTop: '2px solid #333' }}>
-                <td style={{ padding: '6px 8px' }}>Total</td>
-                <td style={{ padding: '6px 8px', textAlign: 'right' }}>₹{quote.totalCharge ?? quote.total}</td>
+                <td style={{ padding: '6px 8px' }}>Total Charge</td>
+                <td style={{ padding: '6px 8px', textAlign: 'right' }}>₹{quote.totalCharge}</td>
               </tr>
             </tbody>
           </table>

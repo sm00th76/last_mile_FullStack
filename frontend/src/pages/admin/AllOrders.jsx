@@ -168,8 +168,8 @@ const AllOrders = () => {
                   </span>
                 </td>
                 <td style={{ padding: 8 }}>{order.orderType}</td>
-                <td style={{ padding: 8 }}>{order.assignedAgent?.name || order.agentName || '—'}</td>
-                <td style={{ padding: 8 }}>₹{order.totalCharge ?? '—'}</td>
+                <td style={{ padding: 8 }}>{order.assignedAgentId?.userId?.name || '—'}</td>
+                <td style={{ padding: 8 }}>₹{order.pricing?.totalCharge ?? '—'}</td>
                 <td style={{ padding: 8 }}>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td style={{ padding: 8, display: 'flex', gap: 4 }}>
                   <button onClick={() => window.open(`/customer/track/${order._id}`, '_blank')}>

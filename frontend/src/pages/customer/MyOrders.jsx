@@ -62,7 +62,7 @@ const MyOrders = () => {
                 </td>
                 <td style={{ padding: 8 }}>{order.orderType}</td>
                 <td style={{ padding: 8 }}>{order.paymentType}</td>
-                <td style={{ padding: 8 }}>₹{order.totalCharge ?? '—'}</td>
+                <td style={{ padding: 8 }}>₹{order.pricing.totalCharge ?? '—'}</td>
                 <td style={{ padding: 8 }}>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td style={{ padding: 8 }}>
                   <button

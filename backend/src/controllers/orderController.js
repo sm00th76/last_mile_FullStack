@@ -166,7 +166,7 @@ export const getMyOrders = async (req, res, next) => {
 
     const orders = await Order.find(filter)
       .sort({ createdAt: -1 })
-      .populate('assignedAgentId')
+      .populate({ path: 'assignedAgentId', populate: { path: 'userId', select: 'name email phone' } })
       .populate('customerId', 'name email')
       .lean();
 
@@ -184,7 +184,7 @@ export const getOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('customerId', 'name email phone')
-      .populate('assignedAgentId')
+      .populate({ path: 'assignedAgentId', populate: { path: 'userId', select: 'name email phone' } })
       .populate('pricing.rateCardUsed');
 
     if (!order) {
@@ -433,7 +433,7 @@ export const getAllOrders = async (req, res, next) => {
         .skip(skip)
         .limit(parseInt(limit))
         .populate('customerId', 'name email')
-        .populate('assignedAgentId')
+        .populate({ path: 'assignedAgentId', populate: { path: 'userId', select: 'name email phone' } })
         .lean(),
       Order.countDocuments(filter),
     ]);
